@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2747a8">
+<title>Раціональні вирази: підготовка до контрольної</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&family=Nunito:wght@400;600;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --bg:#eef1f6; --surface:#ffffff; --fg:#1b2333; --muted:#5b6578; --line:#d3d9e4; --grid:#e3eaf5;
+  --ink:#2747a8; --ink-soft:#e6ecfa;
+  --f1:#d4520f; --f1-soft:#fde9dc; --f2:#0a7d6c; --f2-soft:#d9f2ee;
+  --ok:#1f8a4c; --ok-soft:#dff1e6; --bad:#c2312d; --bad-soft:#f9e0de; --gold:#c98a00; --gold-soft:#fbf0d3;
+  --display:"Rubik","Trebuchet MS",sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --math:"PT Serif","Times New Roman",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151d; --surface:#1a202b; --fg:#e7ebf3; --muted:#a2acbd; --line:#2e3646; --grid:#242c3a;
+  --ink:#8fa8ff; --ink-soft:#212b45;
+  --f1:#ff9a5c; --f1-soft:#3c2618; --f2:#4fd1bc; --f2-soft:#163632;
+  --ok:#5ccb8b; --ok-soft:#183626; --bad:#ff7d72; --bad-soft:#3e1f1d; --gold:#ffc94d; --gold-soft:#3a2f12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151d; --surface:#1a202b; --fg:#e7ebf3; --muted:#a2acbd; --line:#2e3646; --grid:#242c3a;
+  --ink:#8fa8ff; --ink-soft:#212b45;
+  --f1:#ff9a5c; --f1-soft:#3c2618; --f2:#4fd1bc; --f2-soft:#163632;
+  --ok:#5ccb8b; --ok-soft:#183626; --bad:#ff7d72; --bad-soft:#3e1f1d; --gold:#ffc94d; --gold-soft:#3a2f12; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.5;margin:0}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:22px 48px}
+header h1{font-family:var(--display);font-weight:700;font-size:clamp(1.45rem,4vw,2.3rem);line-height:1.15;margin:0 0 4px;text-wrap:balance}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 16px}
+.tab{font:inherit;font-weight:800;font-size:1rem;padding:9px 18px;border-radius:999px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;display:flex;align-items:center;gap:8px}
+.tab b{font-family:var(--display);font-weight:500;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);font-size:.9rem}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.tab[aria-selected="true"] b{border-color:var(--surface)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--f1);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,26px)}
+h2{font-family:var(--display);font-weight:500;font-size:1.35rem;margin:0 0 14px;text-wrap:balance}
+.h2n{font-family:var(--body);font-weight:600;font-size:.95rem;color:var(--muted)}
+h3{font-family:var(--display);font-weight:500;font-size:1.1rem;margin:0 0 8px}
+.btn{font:inherit;font-weight:800;font-size:1rem;padding:10px 16px;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn.main{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.btn.hint{border-color:var(--gold);background:var(--gold-soft)}
+.btn:disabled{opacity:.45;cursor:default}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.note{margin-top:12px;color:var(--muted);font-size:.95rem}
+
+/* математика */
+.mx{font-family:var(--math)}
+.mx i{font-style:italic}
+.mx sup{font-size:.68em;vertical-align:.75em;line-height:0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:2px 3px;line-height:1.3}
+.fr>span{padding:0 4px;white-space:nowrap}
+.fr>span+span{border-top:1.6px solid currentColor}
+.br{display:inline-block;font-size:2.1em;line-height:1;vertical-align:middle;font-weight:400;transform:scaleY(1.12);margin:0 1px;position:relative;top:-.06em}
+sup.hi{font-size:.75em!important;vertical-align:1.7em!important}
+.expr{font-size:1.32rem;margin:6px 0 14px;padding:10px 14px;border-radius:12px;background:var(--ink-soft);display:inline-block;max-width:100%;overflow-x:auto;line-height:2}
+.ttext{font-size:1.1rem;margin:4px 0 6px}
+
+/* пояснення */
+.theory{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:18px;align-items:start}
+.topics{display:grid;gap:8px}
+.fam{font:inherit;font-weight:800;font-size:.95rem;border:2px solid var(--line);border-radius:14px;background:var(--bg);color:var(--fg);padding:6px 12px 6px 6px;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:48px;text-align:left}
+.fam .ic{flex:none;width:40px;height:34px;border-radius:9px;display:grid;place-items:center;background:var(--surface);color:var(--ink);font-family:var(--math);font-size:1.05rem;font-weight:700;border:2px solid var(--line)}
+.fam[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--surface)}
+.fam[aria-pressed="true"] .ic{border-color:var(--surface)}
+.props{display:grid;gap:8px;margin-bottom:12px}
+.props button{font:inherit;font-size:1rem;font-weight:600;text-align:left;padding:9px 12px;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;line-height:1.9}
+.props button b{font-family:var(--display);font-weight:500;color:var(--ink);margin-right:4px}
+.props button[aria-pressed="true"]{border-color:var(--f1);background:var(--f1-soft)}
+.board{border:1px solid var(--line);border-radius:14px;padding:12px 16px;min-height:150px;
+  background-color:var(--surface);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:20px 20px}
+.bl{display:flex;flex-wrap:wrap;align-items:center;gap:2px 14px;padding:5px 0;animation:bin .45s ease}
+.bl .m{font-size:1.3rem;line-height:2.1}
+.bl .cm{font-size:.92rem;font-weight:800;color:var(--f2)}
+.bl.fin .m{color:var(--ink);font-weight:700}
+@keyframes bin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* завдання */
+.progress{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px 10px;font-weight:800;color:var(--muted);font-size:.95rem;margin-bottom:8px}
+.dots{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.dots i{width:22px;height:9px;border-radius:99px;background:var(--line);cursor:pointer}
+.dots i.ok{background:var(--ok)} .dots i.no{background:var(--bad)} .dots i.cur{background:var(--ink)} .dots i.help{background:var(--gold)}
+.task1{max-width:760px}
+.lvl{font-family:var(--body);font-weight:800;font-size:.8rem;padding:3px 10px;border-radius:99px;background:var(--gold-soft);color:var(--fg);border:1px solid var(--gold);vertical-align:middle;margin-left:6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;max-width:620px}
+.opts button{font:inherit;font-weight:800;font-size:1.05rem;padding:10px 12px;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;text-align:left}
+.opts button .mx{font-size:1.2rem;font-weight:400}
+.opts button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink-soft)}
+.opts button.right{background:var(--ok-soft);border-color:var(--ok)}
+.opts button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opts button:disabled{cursor:default}
+.tpl{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-size:1.3rem;line-height:2.2;margin:4px 0 0}
+.tpl .lb{font-family:var(--body);font-size:1rem;font-weight:800;color:var(--muted);margin-right:4px}
+.tpl input{font-family:var(--body);font-weight:800;font-size:1.05rem;width:2.7em;height:38px;text-align:center;padding:2px;border:2px solid var(--line);border-radius:9px;background:var(--surface);color:var(--fg);vertical-align:middle}
+.tpl sup{vertical-align:1.05em;margin-left:2px;font-size:1rem}
+.tpl sup input{width:2.1em;height:30px;font-size:.9rem;vertical-align:baseline}
+.tpl .fr>span{padding:3px 4px}
+.tpl input.act{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink-soft)}
+.tpl input.ok{border-color:var(--ok);background:var(--ok-soft)}
+.tpl input.no{border-color:var(--bad);background:var(--bad-soft)}
+.tv{display:inline-block;min-width:1.2em;padding:0 4px;border-radius:6px;background:var(--gold-soft);font-family:var(--body);font-weight:800;font-size:.9em}
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:330px;margin-top:12px}
+.kp button{font:inherit;font-weight:800;font-size:1.25rem;min-height:50px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer;touch-action:manipulation}
+.kp button:active{background:var(--ink-soft);border-color:var(--ink)}
+.kp .w{grid-column:span 2;font-size:1rem}
+.kp .del{color:var(--bad)}
+.steps{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.steps li{padding:8px 12px;border-radius:10px;background:var(--gold-soft);border-left:4px solid var(--gold);font-size:1rem;line-height:2}
+.steps li b{color:var(--gold)}
+.steps .mx{font-size:1.15rem}
+.fb{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:1rem;line-height:1.9}
+.fb.ok{background:var(--ok-soft)} .fb.no{background:var(--bad-soft)} .fb.info{background:var(--gold-soft)}
+.fb .ttl{font-weight:800;display:block;line-height:1.5}
+.fb .mx{font-size:1.15rem}
+.final{text-align:center;padding:10px 0}
+.final .big{font-family:var(--display);font-weight:700;font-size:3rem;line-height:1.1;color:var(--ink)}
+.final p{margin:6px 0}
+
+/* контрольна */
+.exbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.exbar button{font:inherit;font-weight:800;font-size:.85rem;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;padding:0}
+.exbar button.ans{background:var(--ink-soft);border-color:var(--ink)}
+.exbar button.cur{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.rules{margin:0 0 14px;padding-left:1.2em;font-size:.95rem}
+.rules li{margin:4px 0}
+.namebox{display:grid;gap:8px;margin:0 0 14px;max-width:420px}
+.namebox label{font-weight:800;display:grid;gap:4px}
+.namebox input{font:inherit;padding:9px 12px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg)}
+.lvhead{font-family:var(--display);font-weight:500;color:var(--f1);font-size:.95rem;margin:0 0 4px}
+.review{display:grid;gap:8px;margin-top:14px;text-align:left}
+.review div{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:.98rem;line-height:2}
+.review div.ok{border-color:var(--ok)} .review div.part{border-color:var(--gold)} .review div.no{border-color:var(--bad)}
+.review b{display:block;line-height:1.5}
+.review .mx{font-size:1.12rem}
+.toast{position:fixed;left:50%;top:14px;transform:translate(-50%,-200px);visibility:hidden;transition:transform .35s;z-index:30;background:var(--gold);color:#1b1400;font-weight:800;padding:10px 18px;border-radius:99px;max-width:calc(100vw - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+.author{margin:18px 0 0;font-size:.75rem;color:var(--muted);opacity:.6;text-align:left}
+
+@media (max-width:820px){.theory{grid-template-columns:minmax(0,1fr);gap:12px}.topics{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){
+  body{font-size:17px}
+  .wrap{padding-block:12px calc(92px + env(safe-area-inset-bottom,0px))}
+  header h1{font-size:1.35rem}
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.07)}
+  .tab{border:0;border-radius:12px;padding:5px 2px;font-size:.78rem;font-weight:700;flex-direction:column;gap:2px;background:transparent;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;justify-content:center}
+  .tab b{width:30px;height:30px;font-size:1rem}
+  .tab[aria-selected="true"]{background:var(--ink-soft);color:var(--ink)}
+  .tab[aria-selected="true"] b{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+  .panel{margin-top:12px;padding:16px 12px;border-radius:16px}
+  h2{font-size:1.2rem}
+  .fam{font-size:.85rem;padding:4px 8px 4px 4px;gap:7px}
+  .fam .ic{width:34px;height:30px;font-size:.95rem}
+  .expr{font-size:1.15rem;padding:8px 10px}
+  .bl .m{font-size:1.12rem}
+  .opts{grid-template-columns:1fr}
+  .row-btns .btn{flex:1 1 auto}
+  .tpl{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Раціональні вирази: готуємось до контрольної</h1></header>
+
+  <nav class="tabs" role="tablist" aria-label="Розділи тренажера">
+    <button class="tab" role="tab" id="t-th" aria-controls="p-th" aria-selected="true"><b>1</b>Пояснення</button>
+    <button class="tab" role="tab" id="t-tr" aria-controls="p-tr" aria-selected="false"><b>2</b>Тренування</button>
+    <button class="tab" role="tab" id="t-ex" aria-controls="p-ex" aria-selected="false"><b>3</b>Контрольна</button>
+  </nav>
+
+  <section class="panel" id="p-th" role="tabpanel" aria-labelledby="t-th">
+    <h2>Пояснення <span class="h2n">(обери тему, потім правило; «Далі» показує розв'язання по кроках)</span></h2>
+    <div class="theory">
+      <div class="topics" id="topics"></div>
+      <div>
+        <div class="props" id="thBody"></div>
+        <div class="board" id="board"></div>
+        <div class="bbtns"><button class="btn main" id="bNext">Далі ▶</button><button class="btn" id="bAll">Усе одразу</button><button class="btn" id="bReset">Спочатку</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-tr" role="tabpanel" aria-labelledby="t-tr" hidden>
+    <h2>Тренування <span class="h2n">(10 завдань, як у пробній контрольній; кнопка «Крок» пояснює розв'язання)</span></h2>
+    <div id="tr"></div>
+  </section>
+
+  <section class="panel" id="p-ex" role="tabpanel" aria-labelledby="t-ex" hidden>
+    <h2>Пробна контрольна <span class="h2n">(10 завдань, 12 балів)</span></h2>
+    <div id="ex"></div>
+  </section>
+  <p class="author">© Сидорчук Н.В.</p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+/* Куди надсилати результати пробної контрольної (FormSubmit.co). */
+const TEACHER_EMAIL='snv.teacher@gmail.com';
+const TITLE='Раціональні вирази (§§ 5–8)';
+const KEY='rv8-';
+const $=id=>document.getElementById(id);
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b)[a,b]=[b,a%b];return a};
+function plural(n,f1,f2,f5){const m=Math.abs(n)%100,k=m%10;if(m>10&&m<20)return f5;if(k===1)return f1;if(k>=2&&k<=4)return f2;return f5}
+const baly=n=>n+' '+plural(n,'бал','бали','балів');
+const fn=n=>(n<0?'−':'')+String(Math.abs(Math.round(n*1000)/1000)).replace('.',',');
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LAB=['А','Б','В','Г'];
+
+/* ---------- запис математики: дроби лише з горизонтальною рискою ---------- */
+const MI=s=>String(s).replace(/-/g,'−').replace(/[a-z]/g,'<i>$&</i>').replace(/\^(\d+|\{\d+\}|<i>[a-z]<\/i>)/g,'<sup>$1</sup>');
+const F=(n,d)=>`<span class="fr"><span>${n}</span><span>${d}</span></span>`;
+const fr=(n,d)=>F(MI(n),MI(d));
+const P=x=>`<span class="br">(</span>${x}<span class="br">)</span>`;
+const PW=(x,n)=>`${P(x)}<sup class="hi">${n}</sup>`;
+const MX=h=>`<span class="mx">${h}</span>`;
+const mi=s=>MX(MI(s));
+const pw=(L,e)=>e===1?L:L+'^'+e;
+const mc=(c,s)=>(c===1&&s?'':c===-1&&s?'-':String(c))+s;
+const sgn=n=>n<0?'-'+(-n):String(n);
+const I=(l,a)=>({l,a});
+const LS=['a','b','c','m','x','y','p'];
+const PAIRS=[['a','m'],['a','b'],['x','y'],['m','c'],['p','k'],['c','n']];
+
+/* ---------- генератори завдань ---------- */
+const GEN={};
+/* 1. множення */
+GEN.mul=[[
+  ()=>{const L=pick(LS),q=rnd(1,3),d=rnd(2,3),p=q+d;let A,B;do{A=rnd(2,9);B=rnd(2,9)}while(A===B||gcd(A,B)>1);
+    return{title:'Множення дробів',text:'Виконай множення:',ex:fr(pw(L,p),A)+' · '+fr(B,pw(L,q)),
+      tpl:fr(`{0}${L}^{1}`,'{2}'),inputs:[I('коефіцієнт',B),I('показник',d),I('знаменник',A)],
+      steps:['Чисельник множимо на чисельник, знаменник — на знаменник: '+MX(fr(`${pw(L,p)} · ${B}`,`${A} · ${pw(L,q)}`)),
+        `Скорочуємо на ${mi(pw(L,q))}: у чисельнику лишається ${mi(pw(L,d))}.`,'Відповідь: '+MX(fr(B+pw(L,d),A))]}},
+  ()=>{const L=pick(LS),B=rnd(2,5),k=rnd(2,6),A=k*B,p=rnd(2,4),q=rnd(1,p-1),d=p-q;
+    return{title:'Множення дробів',text:'Виконай множення:',ex:fr(A,pw(L,p))+' · '+fr(pw(L,q),B),
+      tpl:fr('{0}',d>1?`${L}^{1}`:L),inputs:d>1?[I('чисельник',k),I('показник',d)]:[I('чисельник',k)],
+      steps:['Чисельник множимо на чисельник, знаменник — на знаменник: '+MX(fr(`${A} · ${pw(L,q)}`,`${pw(L,p)} · ${B}`)),
+        `Скорочуємо числа на ${B} (${A} і ${B}) і степені на ${mi(pw(L,q))}.`,'Відповідь: '+MX(fr(k,pw(L,d)))]}}],[
+  ()=>{const [X,Y]=pick(PAIRS);let n1,d1,n2,d2,g,u,v;
+    do{n1=rnd(1,9);d1=rnd(2,16);n2=rnd(1,9);d2=rnd(2,16);g=gcd(n1*n2,d1*d2);u=n1*n2/g;v=d1*d2/g}
+    while(gcd(n1,d1)>1||gcd(n2,d2)>1||g<3||u>5||v<2||v>12);
+    const e=rnd(2,3),k2=rnd(1,2),dk=rnd(1,2),k1=k2+dk,sg=pick([[1,-1],[-1,1],[-1,-1]]),s=sg[0]*sg[1];
+    const f1=fr(mc(n1,pw(X,e)),d1+pw(Y,k1)),f2=fr(mc(n2,pw(Y,k2)),d2+pw(X,e));
+    return{title:'Множення дробів',text:'Виконай множення:',ex:(sg[0]<0?'−':'')+f1+' · '+(sg[1]<0?P('−'+f2):f2),
+      tpl:fr('{0}',`{1}${Y}`+(dk>1?'^{2}':'')),inputs:[I('чисельник (зі знаком)',s*u),I('коефіцієнт знаменника',v)].concat(dk>1?[I('показник',dk)]:[]),
+      steps:[s<0?'Знак: мінус на плюс дає <b>мінус</b>.':'Знак: мінус на мінус дає <b>плюс</b>.',
+        'Множимо: '+MX((s<0?'−':'')+fr(`${n1} · ${n2} · ${pw(X,e)}${pw(Y,k2)}`,`${d1} · ${d2} · ${pw(Y,k1)}${pw(X,e)}`)+' = '+(s<0?'−':'')+fr(`${n1*n2}${pw(X,e)}${pw(Y,k2)}`,`${d1*d2}${pw(X,e)}${pw(Y,k1)}`)),
+        `Скорочуємо на ${g}, на ${mi(pw(X,e))} і на ${mi(pw(Y,k2))}.`,'Відповідь: '+MX(fr(sgn(s*u),v+pw(Y,dk)))+(s<0&&u===1?' (у чисельнику −1)':'')]}}]];
+/* 2. ділення */
+GEN.div=[[
+  ()=>{const L=pick(LS);let A,B;do{A=rnd(2,9);B=rnd(2,9)}while(A===B||gcd(A,B)>1);
+    return{title:'Ділення дробів',text:'Виконай ділення:',ex:fr(L,A)+' : '+fr(L,B),tpl:fr('{0}','{1}'),inputs:[I('чисельник',B),I('знаменник',A)],
+      steps:['Ділення замінюємо множенням на <b>обернений</b> дріб (другий дріб перевертаємо): '+MX(fr(L,A)+' · '+fr(B,L)),
+        `Скорочуємо на ${mi(L)}.`,'Відповідь: '+MX(fr(B,A))]}},
+  ()=>{const L=pick(LS),q=rnd(1,2),dk=rnd(1,2),p=q+dk;let A,B,g,u,v;do{A=rnd(1,9);B=rnd(2,12);g=gcd(A,B);u=A/g;v=B/g}while(v<2||A===B);
+    return{title:'Ділення дробів',text:'Виконай ділення:',ex:fr(A,pw(L,p))+' : '+fr(B,pw(L,q)),tpl:fr('{0}',`{1}${L}`+(dk>1?'^{2}':'')),
+      inputs:[I('чисельник',u),I('коефіцієнт знаменника',v)].concat(dk>1?[I('показник',dk)]:[]),
+      steps:['Ділення замінюємо множенням на обернений дріб: '+MX(fr(A,pw(L,p))+' · '+fr(pw(L,q),B)+' = '+fr(mc(A,pw(L,q)),B+pw(L,p))),
+        `Скорочуємо${g>1?' на '+g+' і':''} на ${mi(pw(L,q))}.`,'Відповідь: '+MX(fr(u,v+pw(L,dk)))]}}],[
+  ()=>{const [Y,X]=pick(PAIRS.map(p=>[p[1],p[0]]));let n1,d1,n2,d2,g,u,v;
+    do{n1=rnd(1,9);d1=rnd(2,12);n2=rnd(2,12);d2=rnd(2,30);g=gcd(n1*d2,d1*n2);u=n1*d2/g;v=d1*n2/g}
+    while(gcd(n1,d1)>1||gcd(n2,d2)>1||g<3||u>6||v<2||v>9);
+    const a1=rnd(1,2),a2=a1+1,b2=1,db=rnd(1,2),b1=b2+db,sg=pick([[1,-1],[-1,1],[-1,-1]]),s=sg[0]*sg[1];
+    const f1=fr(mc(n1,pw(Y,a1)),d1+pw(X,b1)),f2=fr(n2+pw(Y,a2),d2+pw(X,b2)),r2=fr(d2+pw(X,b2),n2+pw(Y,a2));
+    return{title:'Ділення дробів',text:'Виконай ділення:',ex:(sg[0]<0?'−':'')+f1+' : '+(sg[1]<0?P('−'+f2):f2),
+      tpl:fr('{0}',`{1}${X}`+(db>1?'^{2}':'')+Y),inputs:[I('чисельник (зі знаком)',s*u),I('коефіцієнт знаменника',v)].concat(db>1?[I('показник',db)]:[]),
+      steps:['Замінюємо ділення множенням на обернений дріб: '+MX((sg[0]<0?'−':'')+f1+' · '+(sg[1]<0?P('−'+r2):r2)),
+        s<0?'Знак: мінус на плюс дає <b>мінус</b>.':'Знак: мінус на мінус дає <b>плюс</b>.',
+        'Множимо: '+MX((s<0?'−':'')+fr(`${n1} · ${d2} · ${pw(Y,a1)}${pw(X,b2)}`,`${d1} · ${n2} · ${pw(X,b1)}${pw(Y,a2)}`)),
+        `Скорочуємо на ${g}, на ${mi(pw(Y,a1))} і на ${mi(X)}.`,'Відповідь: '+MX(fr(sgn(s*u),v+pw(X,db)+Y))]}}]];
+/* 3. чи є число коренем */
+const YN=['Так, є коренем','Ні, не є коренем'];
+function rootTask(num,den,x0,nv,dv,v){const ok=nv===0&&dv!==0;
+  return{title:'Чи є число коренем?',text:`Чи є число ${fn(x0)} коренем рівняння`,ex:fr(num,den)+' = 0 ?',opts:YN,ans:ok?0:1,
+    steps:['Дріб дорівнює нулю, коли <b>чисельник = 0</b>, а <b>знаменник ≠ 0</b>.',`Підставляємо ${mi(v+' = '+sgn(x0))}: чисельник = ${fn(nv)}, знаменник = ${fn(dv)}.`,
+      ok?'Чисельник 0, знаменник не 0, тому число <b>є</b> коренем.':dv===0?'Знаменник дорівнює 0 — на нуль ділити не можна, тому число <b>не є</b> коренем.':'Чисельник не дорівнює 0, тому число <b>не є</b> коренем.'],
+    sol:ok?`Так: чисельник = 0, знаменник = ${fn(dv)} ≠ 0.`:dv===0?'Ні: знаменник дорівнює 0.':`Ні: чисельник = ${fn(nv)} ≠ 0.`}}
+GEN.root=[[
+  ()=>{const v=pick(['x','a','y']),k=rnd(2,9),yes=Math.random()<.6;let x0=k;if(!yes)do x0=rnd(1,9);while(x0===k);
+    return rootTask(`${v}^2 - ${k*k}`,v,x0,x0*x0-k*k,x0,v)},
+  ()=>{const v=pick(['x','a','y']),k=rnd(1,9),j=rnd(1,9),yes=Math.random()<.6;let x0=k;if(!yes)do x0=rnd(-5,9);while(x0===k||x0===-j);
+    return rootTask(`${v} - ${k}`,`${v} + ${j}`,x0,x0-k,x0+j,v)}],[
+  ()=>{const v=pick(['x','a','y']),k=rnd(2,9);return rootTask(v,`${v} - ${k}`,k,k,0,v)},
+  ()=>{const v=pick(['x','a','y']),k=rnd(2,7),x0=pick([k,-k]);return rootTask(`${v}^2 - ${k*k}`,`${v} - ${k}`,x0,0,x0-k,v)}]];
+/* 4. дії з многочленами (розкладання на множники) */
+GEN.fac=[[
+  ()=>{const v=pick(['x','a','y']),k=rnd(2,9),r=rnd(2,6);let n;do n=rnd(1,9);while(n===k);
+    return{title:'Множення з розкладанням',text:'Виконай множення:',ex:fr(`${v}^2 - ${k*k}`,`${r}${v} + ${r*n}`)+' · '+fr(`${v} + ${n}`,`${v} - ${k}`),
+      tpl:fr(`${v} + {0}`,'{1}'),inputs:[I('число',k),I('знаменник',r)],
+      steps:['Розкладаємо на множники: '+mi(`${v}^2 - ${k*k} = (${v} - ${k})(${v} + ${k})`)+',  '+mi(`${r}${v} + ${r*n} = ${r}(${v} + ${n})`)+'.',
+        'Множимо: '+MX(fr(`(${v} - ${k})(${v} + ${k})(${v} + ${n})`,`${r}(${v} + ${n})(${v} - ${k})`)),
+        `Скорочуємо на ${mi(`(${v} - ${k})`)} і на ${mi(`(${v} + ${n})`)}.`,'Відповідь: '+MX(fr(`${v} + ${k}`,r))]}},
+  ()=>{const v=pick(['x','a','y']),k=rnd(1,9),p=rnd(2,3);let q,r;do{q=rnd(2,7);r=rnd(2,7)}while(q===r||gcd(q,r)>1);
+    return{title:'Множення з розкладанням',text:'Виконай множення:',ex:fr(`${q}${v} + ${q*k}`,pw(v,p))+' · '+fr(pw(v,p+1),`${r}${v} + ${r*k}`),
+      tpl:fr(`{0}${v}`,'{1}'),inputs:[I('коефіцієнт',q),I('знаменник',r)],
+      steps:['Виносимо спільний множник: '+mi(`${q}${v} + ${q*k} = ${q}(${v} + ${k})`)+',  '+mi(`${r}${v} + ${r*k} = ${r}(${v} + ${k})`)+'.',
+        'Множимо: '+MX(fr(`${q}(${v} + ${k}) · ${pw(v,p+1)}`,`${pw(v,p)} · ${r}(${v} + ${k})`)),
+        `Скорочуємо на ${mi(`(${v} + ${k})`)} і на ${mi(pw(v,p))}.`,'Відповідь: '+MX(fr(q+v,r))]}}],[
+  ()=>{const v=pick(['x','a','y']);let p,q,r,n,k;do{p=rnd(2,4);q=rnd(2,4);r=rnd(2,7);n=rnd(1,6);k=rnd(2,6)}while(p*q>12||gcd(r,p*q)>1||n===k);
+    return{title:'Ділення з розкладанням',text:'Виконай ділення:',ex:fr(`${v}^2 - ${k*k}`,`${p}${v} - ${p*n}`)+' : '+fr(`${q}${v} + ${q*k}`,`${r}${v} - ${r*n}`),
+      tpl:fr(`{0}(${v} - {1})`,'{2}'),inputs:[I('коефіцієнт',r),I('число в дужках',k),I('знаменник',p*q)],
+      steps:['Замінюємо ділення множенням на обернений дріб: '+MX(fr(`${v}^2 - ${k*k}`,`${p}${v} - ${p*n}`)+' · '+fr(`${r}${v} - ${r*n}`,`${q}${v} + ${q*k}`)),
+        'Розкладаємо на множники: '+MX(fr(`(${v} - ${k})(${v} + ${k}) · ${r}(${v} - ${n})`,`${p}(${v} - ${n}) · ${q}(${v} + ${k})`)),
+        `Скорочуємо на ${mi(`(${v} - ${n})`)} і на ${mi(`(${v} + ${k})`)}.`,'Відповідь: '+MX(fr(`${r}(${v} - ${k})`,p*q))]}},
+  ()=>{const [x,y,a,b]=pick([['x','y','a','b'],['m','n','a','c'],['a','b','x','y'],['p','k','c','m']]),s=pick(['-','+']),o=s==='-'?'+':'-';
+    const right=fr(b+x,`${a}(${x} ${s} ${y})`),opts0=[right,fr(b,`${a}(${x} ${s} ${y})`),fr(b+x,`${a}(${x} ${o} ${y})`),fr(a+b+x,`${x} ${s} ${y}`)],opts=shuffle(opts0);
+    return{title:'Множення з розкладанням',text:'Виконай множення. Обери правильну відповідь:',ex:fr(`${x}^2 ${s} ${x}${y}`,`${a}^2`)+' · '+fr(a+b,`${x}^2 ${s} 2${x}${y} + ${y}^2`),
+      opts:opts.map(MX),ans:opts.indexOf(right),
+      steps:['Розкладаємо на множники: '+mi(`${x}^2 ${s} ${x}${y} = ${x}(${x} ${s} ${y})`)+',  '+mi(`${x}^2 ${s} 2${x}${y} + ${y}^2 = (${x} ${s} ${y})^2`)+'.',
+        'Множимо: '+MX(fr(`${x}(${x} ${s} ${y}) · ${a}${b}`,`${a}^2(${x} ${s} ${y})^2`)),
+        `Скорочуємо на ${mi(a)} і на ${mi(`(${x} ${s} ${y})`)}.`,'Відповідь: '+MX(right)],sol:MX(right)}}]];
+/* 5. степінь */
+GEN.pow=[[
+  ()=>{const [A,B,C]=pick([['a','b','c'],['x','y','m'],['m','n','k'],['p','c','a']]),n=pick([2,3,4,5,10]),p=rnd(2,3),q=rnd(2,4);
+    return{title:'Піднесення дробу до степеня',text:'Піднеси дріб до степеня:',ex:PW(fr(`${A}^${p}${B}`,`${C}^${q}`),n),
+      tpl:fr(`${A}^{0}${B}^{1}`,`${C}^{2}`),inputs:[I('показник '+A,p*n),I('показник '+B,n),I('показник '+C,q*n)],
+      steps:['До степеня підносимо і чисельник, і знаменник: '+MX(fr(`(${A}^${p})^${n} · ${B}^${n}`,`(${C}^${q})^${n}`)),
+        'Степінь степеня — показники множимо: '+mi(`(${A}^${p})^${n} = ${A}^${p*n}`)+',  '+mi(`(${C}^${q})^${n} = ${C}^${q*n}`)+'.','Відповідь: '+MX(fr(`${A}^${p*n}${B}^${n}`,`${C}^${q*n}`))]}},
+  ()=>{const [A,B]=pick(PAIRS),n=pick([2,2,3]),k=n===2?rnd(2,5):rnd(2,3),q=rnd(2,3);
+    return{title:'Піднесення дробу до степеня',text:'Піднеси дріб до степеня:',ex:PW(fr(k+A,`${B}^${q}`),n),
+      tpl:fr(`{0}${A}^{1}`,`${B}^{2}`),inputs:[I('коефіцієнт',k**n),I('показник '+A,n),I('показник '+B,q*n)],
+      steps:['Підносимо до степеня чисельник і знаменник: '+MX(fr(`${k}^${n} · ${A}^${n}`,`(${B}^${q})^${n}`)),`${mi(`${k}^${n} = ${k**n}`)},  ${mi(`(${B}^${q})^${n} = ${B}^${q*n}`)}.`,
+        'Відповідь: '+MX(fr(`${k**n}${A}^${n}`,`${B}^${q*n}`))]}}],[
+  ()=>{const [A,M]=pick(PAIRS),n=pick([2,3,3]),k=rnd(2,3),p=rnd(2,3),q=rnd(2,3),c=(-k)**n;
+    return{title:'Степінь дробу з мінусом',text:'Піднеси дріб до степеня:',ex:PW('−'+fr(`${k}${A}^${p}`,`${M}^${q}`),n),
+      tpl:fr(`{0}${A}^{1}`,`${M}^{2}`),inputs:[I('коефіцієнт (зі знаком)',c),I('показник '+A,p*n),I('показник '+M,q*n)],
+      steps:[n%2?'Степінь <b>непарний</b> — мінус лишається.':'Степінь <b>парний</b> — мінус зникає.',
+        `${mi(`${k}^${n} = ${k**n}`)},  ${mi(`(${A}^${p})^${n} = ${A}^${p*n}`)},  ${mi(`(${M}^${q})^${n} = ${M}^${q*n}`)}.`,'Відповідь: '+MX(fr(`${sgn(c)}${A}^${p*n}`,`${M}^${q*n}`))]}},
+  ()=>{const [A,B]=pick(PAIRS),n=pick([2,3]),k=n===2?rnd(2,4):rnd(2,3),q=rnd(2,4),c=(-k)**n;
+    return{title:'Степінь дробу з мінусом',text:'Піднеси дріб до степеня:',ex:PW(fr(`-${k}${A}`,`${B}^${q}`),n),
+      tpl:fr(`{0}${A}^{1}`,`${B}^{2}`),inputs:[I('коефіцієнт (зі знаком)',c),I('показник '+A,n),I('показник '+B,q*n)],
+      steps:[n%2?'Степінь <b>непарний</b> — мінус лишається.':'Степінь <b>парний</b> — мінус зникає.',
+        `${mi(`(-${k})^${n} = ${sgn(c)}`)},  ${mi(`(${B}^${q})^${n} = ${B}^${q*n}`)}.`,'Відповідь: '+MX(fr(`${sgn(c)}${A}^${n}`,`${B}^${q*n}`))]}}]];
+/* 6. рівняння */
+GEN.eq=[[
+  ()=>{const v=pick(['x','y','a']),p=rnd(2,5),k=rnd(1,6),j=rnd(1,6),plus=Math.random()<.5,x0=plus?-k:k;
+    const num=plus?`${p}${v} + ${p*k}`:`${p}${v} - ${p*k}`,den=plus?`${v} - ${j}`:`${v} + ${j}`,dv=plus?x0-j:x0+j;
+    return{title:'Рівняння',text:'Розв\'яжи рівняння:',ex:fr(num,den)+' = 0',tpl:mi(v+' = ')+'{0}',inputs:[I(v,x0)],
+      steps:['Дріб дорівнює нулю, коли чисельник = 0, а знаменник ≠ 0.',`${mi(num+' = 0')},  ${mi(`${p}${v} = ${sgn(-p*k*(plus?1:-1))}`)},  ${mi(`${v} = ${sgn(x0)}`)}.`,
+        `Перевіряємо знаменник: ${mi(den.replace(v,'('+sgn(x0)+')')+' = '+sgn(dv))} ≠ 0.`,'Відповідь: '+mi(`${v} = ${sgn(x0)}`)]}},
+  ()=>{const v=pick(['x','y','a']),k=rnd(2,8),s=pick([1,-1]),x0=-s*k;
+    return{title:'Рівняння (з пасткою)',text:'Розв\'яжи рівняння:',ex:fr(`${v}^2 - ${k*k}`,`${v} ${s>0?'-':'+'} ${k}`)+' = 0',tpl:mi(v+' = ')+'{0}',inputs:[I(v,x0)],
+      steps:['Дріб дорівнює нулю, коли чисельник = 0, а знаменник ≠ 0.',`${mi(`${v}^2 - ${k*k} = 0`)},  ${mi(`${v}^2 = ${k*k}`)},  ${mi(`${v} = ${k}`)} або ${mi(`${v} = -${k}`)}.`,
+        `При ${mi(`${v} = ${sgn(s*k)}`)} знаменник дорівнює 0, тому це <b>не корінь</b>.`,'Відповідь: '+mi(`${v} = ${sgn(x0)}`)]}}],[
+  ()=>{const v=pick(['x','y']),a=rnd(2,4),c=rnd(1,3);let x0;do x0=rnd(-5,-1);while(x0===-c);const b=-a*c*x0;
+    return{title:'Рівняння',text:'Розв\'яжи рівняння:',ex:fr(`${a}${v}^2 - ${b}`,`${v} + ${c}`)+' = '+mi(a+v),tpl:mi(v+' = ')+'{0}',inputs:[I(v,x0)],
+      steps:[`Знаменник не може бути нулем: ${mi(`${v} ≠ -${c}`)}. Множимо обидві частини на ${mi(`(${v} + ${c})`)}.`,
+        mi(`${a}${v}^2 - ${b} = ${a}${v}(${v} + ${c})`)+',  '+mi(`${a}${v}^2 - ${b} = ${a}${v}^2 + ${a*c}${v}`)+'.',
+        `${mi(`-${b} = ${a*c}${v}`)},  ${mi(`${v} = ${sgn(x0)}`)}. Перевірка: ${mi(sgn(x0))} ≠ ${mi('-'+c)}.`,'Відповідь: '+mi(`${v} = ${sgn(x0)}`)]}},
+  ()=>{const v=pick(['x','y']),c=rnd(2,5),x0=rnd(-6,-1),b=-c*x0;
+    return{title:'Рівняння',text:'Розв\'яжи рівняння:',ex:fr(`${v}^2 + ${b}`,`${v} - ${c}`)+' = '+mi(v),tpl:mi(v+' = ')+'{0}',inputs:[I(v,x0)],
+      steps:[`Знаменник не може бути нулем: ${mi(`${v} ≠ ${c}`)}. Множимо обидві частини на ${mi(`(${v} - ${c})`)}.`,
+        mi(`${v}^2 + ${b} = ${v}(${v} - ${c})`)+',  '+mi(`${v}^2 + ${b} = ${v}^2 - ${c}${v}`)+'.',
+        `${mi(`${b} = -${c}${v}`)},  ${mi(`${v} = ${sgn(x0)}`)}. Перевірка: ${mi(sgn(x0))} ≠ ${mi(String(c))}.`,'Відповідь: '+mi(`${v} = ${sgn(x0)}`)]}}]];
+/* 7. спрощення виразу (рівень 3) */
+GEN.simp=[[
+  ()=>{const L=pick(['a','b','m']),k=rnd(1,3);let c,g,u,v;do{c=rnd(2,9);g=gcd(4*k,c);u=4*k/g;v=c/g}while(v<2);
+    const kL=k===1?L:k+L,kk=k===1?`${L}^2`:`${k*k}${L}^2`;
+    return{title:'Спрощення виразу',text:'Спрости вираз:',ex:P(fr(`${kL} + 1`,`${kL} - 1`)+' − '+fr(`${kL} - 1`,`${kL} + 1`))+' : '+fr(`${c}${L}^2`,`${kk} - 1`),
+      tpl:fr('{0}',`{1}${L}`),inputs:[I('чисельник',u),I('коефіцієнт знаменника',v)],
+      steps:[`Спочатку дужки. Спільний знаменник: ${mi(`(${kL} - 1)(${kL} + 1) = ${kk} - 1`)}.`,
+        'Чисельник: '+mi(`(${kL} + 1)^2 - (${kL} - 1)^2 = ${4*k}${L}`)+', тож дужка = '+MX(fr(`${4*k}${L}`,`${kk} - 1`))+'.',
+        'Ділимо (множимо на обернений): '+MX(fr(`${4*k}${L}`,`${kk} - 1`)+' · '+fr(`${kk} - 1`,`${c}${L}^2`)+' = '+fr(4*k,c+L)),
+        'Відповідь: '+MX(fr(u,v+L))]}},
+  ()=>{const L=pick(['a','b','m','x']),k=rnd(2,6);let c,g,u,v;do{c=rnd(2,9);g=gcd(2*k,c);u=2*k/g;v=c/g}while(v<2);
+    return{title:'Спрощення виразу',text:'Спрости вираз:',ex:P(fr(L,`${L} - ${k}`)+' − '+fr(L,`${L} + ${k}`))+' : '+fr(c+L,`${L}^2 - ${k*k}`),
+      tpl:fr('{0}','{1}'),inputs:[I('чисельник',u),I('знаменник',v)],
+      steps:[`Спочатку дужки. Спільний знаменник: ${mi(`(${L} - ${k})(${L} + ${k}) = ${L}^2 - ${k*k}`)}.`,
+        'Чисельник: '+mi(`${L}(${L} + ${k}) - ${L}(${L} - ${k}) = ${L}^2 + ${k}${L} - ${L}^2 + ${k}${L} = ${2*k}${L}`)+', тож дужка = '+MX(fr(`${2*k}${L}`,`${L}^2 - ${k*k}`))+'.',
+        'Ділимо (множимо на обернений): '+MX(fr(`${2*k}${L}`,`${L}^2 - ${k*k}`)+' · '+fr(`${L}^2 - ${k*k}`,c+L)+' = '+fr(2*k,c)),'Відповідь: '+MX(fr(u,v))]}}]];
+
+const TYP={mul:'Множення',div:'Ділення',root:'Корінь рівняння',fac:'Множення з розкладанням',pow:'Степінь дробу',eq:'Рівняння',simp:'Спрощення виразу'};
+/* структура як у контрольній: [вид, складність, бали, рівень] */
+const PLAN=()=>[['mul',0,1,1],['div',0,1,1],['root',0,1,1],['pow',0,1,1],['mul',1,1,2],['fac',0,2,2],['pow',1,1,2],['root',1,1,2],['eq',0,1,2],['simp',0,2,3]];
+const TRV={};
+const fillT=(tpl,f)=>tpl.replace(/\{(\d+)\}/g,(m,i)=>f(+i));
+function make(type,lv,avoid,pts,level){const arr=GEN[type][lv];let v=rnd(0,arr.length-1);if(arr.length>1&&v===avoid)v=(v+rnd(1,arr.length-1))%arr.length;
+  const t=arr[v]();Object.assign(t,{type,lv,v,pts:pts||1,level});
+  if(!t.sol)t.sol=MX((t.tplLead?'':'')+fillT(t.tpl,i=>MI(sgn(t.inputs[i].a))));
+  return Object.assign(t,{hintN:0,wrong:0,solved:false,shown:false,sel:null,vals:t.inputs?t.inputs.map(()=>''):null,marks:null,fb:''})}
+
+/* ---------- вкладки ---------- */
+const tabs=[...document.querySelectorAll('.tab')];
+function openTab(t){tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);$(x.getAttribute('aria-controls')).hidden=!on});window.scrollTo(0,0);
+  try{localStorage.setItem(KEY+'tab',t.id)}catch(e){}}
+tabs.forEach(t=>t.addEventListener('click',()=>openTab(t)));
+let toastT;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2300)}
+
+/* ---------- 1. пояснення ---------- */
+const L_=(m,c)=>[MX(m),c||''];
+const TOP={
+  mul:{n:'Множення дробів',ic:'·',it:[
+    {h:'Правило.',t:'Чисельник множимо на чисельник, знаменник — на знаменник: '+MX(fr('a','b')+' · '+fr('c','d')+' = '+fr('ac','bd')),ex:[
+      L_(fr('c^4',4)+' · '+fr(5,'c^2'),'приклад'),L_('= '+fr('c^4 · 5','4 · c^2'),'перемножуємо'),L_('= '+fr('5c^2',4),'скорочуємо на c² — готово')]},
+    {h:'Знак і скорочення.',t:'Мінус на плюс дає мінус, мінус на мінус — плюс. Спочатку скорочуємо, потім множимо числа.',ex:[
+      L_(fr('2a^3','15m^2')+' · '+P('−'+fr('5m','6a^3')),'приклад'),L_('= −'+fr('2 · 5 · a^3m','15 · 6 · m^2a^3'),'знак мінус'),L_('= −'+fr('10a^3m','90a^3m^2'),''),L_('= '+fr('-1','9m'),'скорочуємо на 10, a³ і m')]},
+    {h:'Многочлени.',t:'Чисельники й знаменники спочатку розкладаємо на множники, потім скорочуємо.',ex:[
+      L_(fr('a^2 - 9','2a + 4')+' · '+fr('a + 2','a - 3'),'приклад'),L_('= '+fr('(a - 3)(a + 3)','2(a + 2)')+' · '+fr('a + 2','a - 3'),'розкладаємо'),
+      L_('= '+fr('(a - 3)(a + 3)(a + 2)','2(a + 2)(a - 3)'),'скорочуємо (a − 3) і (a + 2)'),L_('= '+fr('a + 3',2),'готово')]}]},
+  div:{n:'Ділення дробів',ic:':',it:[
+    {h:'Правило.',t:'Ділення замінюємо множенням на обернений дріб: '+MX(fr('a','b')+' : '+fr('c','d')+' = '+fr('a','b')+' · '+fr('d','c')),ex:[
+      L_(fr('p',5)+' : '+fr('p',7),'приклад'),L_('= '+fr('p',5)+' · '+fr(7,'p'),'перевертаємо другий дріб'),L_('= '+fr(7,5),'скорочуємо на p')]},
+    {h:'Зі степенями.',t:'Після заміни на множення скорочуємо числа і степені.',ex:[
+      L_(fr(2,'a^2')+' : '+fr(4,'a'),'приклад'),L_('= '+fr(2,'a^2')+' · '+fr('a',4),'множимо на обернений'),L_('= '+fr('2a','4a^2'),''),L_('= '+fr(1,'2a'),'скорочуємо на 2a')]},
+    {h:'Многочлени.',t:'Перевертаємо другий дріб, розкладаємо на множники, скорочуємо.',ex:[
+      L_(fr('x^2 - 16','3x - 6')+' : '+fr('2x + 8','5x - 10'),'приклад'),L_('= '+fr('x^2 - 16','3x - 6')+' · '+fr('5x - 10','2x + 8'),'обернений дріб'),
+      L_('= '+fr('(x - 4)(x + 4) · 5(x - 2)','3(x - 2) · 2(x + 4)'),'розкладаємо'),L_('= '+fr('5(x - 4)',6),'скорочуємо (x − 2) і (x + 4)')]}]},
+  pow:{n:'Степінь дробу',ic:'( )ⁿ',it:[
+    {h:'Правило.',t:'До степеня підносимо і чисельник, і знаменник: '+MX(PW(fr('a','b'),'<i>n</i>')+' = '+fr('a^n','b^n')),ex:[
+      L_(PW(fr('a^2b','c^3'),10),'приклад'),L_('= '+fr('(a^2)^10 · b^10','(c^3)^10'),'кожен множник у степінь'),L_('= '+fr('a^20b^10','c^30'),'показники множимо: 2 · 10 = 20')]},
+    {h:'Мінус.',t:'У <b>парному</b> степені мінус зникає, у <b>непарному</b> — лишається.',ex:[
+      L_(PW('−'+fr('2a^3','m^2'),3),'приклад, степінь 3 — непарний'),L_('= −'+fr('2^3 · (a^3)^3','(m^2)^3'),'мінус лишається'),L_('= '+fr('-8a^9','m^6'),'мінус пишемо в чисельнику')]}]},
+  fac:{n:'Розкладання на множники',ic:'ab',it:[
+    {h:'Спільний множник.',t:mi('ax + ay = a(x + y)'),ex:[L_(MI('3x - 6 = 3(x - 2)'),''),L_(MI('2x + 8 = 2(x + 4)'),''),L_(MI('x^2 - xy = x(x - y)'),'')]},
+    {h:'Різниця квадратів.',t:mi('a^2 - b^2 = (a - b)(a + b)'),ex:[L_(MI('x^2 - 16 = (x - 4)(x + 4)'),''),L_(MI('4a^2 - 1 = (2a - 1)(2a + 1)'),'')]},
+    {h:'Квадрат суми й різниці.',t:mi('a^2 ± 2ab + b^2 = (a ± b)^2'),ex:[L_(MI('x^2 - 2xy + y^2 = (x - y)^2'),''),L_(MI('x^2 + 14x + 49 = (x + 7)^2'),'')]},
+    {h:'Зміна знака.',t:mi('b - a = -(a - b)'),ex:[L_(MI('7 - x = -(x - 7)'),''),L_('−'+fr(7,'7 - x')+' = '+fr(7,'x - 7'),'мінус на мінус дає плюс')]}]},
+  eq:{n:'Рівняння з дробом',ic:'=0',it:[
+    {h:'Правило.',t:MX(fr('A','B')+' = 0')+', коли <b>A = 0</b>, а <b>B ≠ 0</b>.',ex:[
+      L_(fr('4x + 8','x - 3')+' = 0','приклад'),L_(MI('4x + 8 = 0,   x = -2'),'чисельник = 0'),L_(MI('-2 - 3 = -5 ≠ 0'),'знаменник не 0'),L_(MI('x = -2'),'відповідь')]},
+    {h:'Пастка.',t:'Корінь чисельника, при якому знаменник = 0, викидаємо.',ex:[
+      L_(fr('x^2 - 9','x - 3')+' = 0','приклад'),L_(MI('x^2 = 9,   x = 3  або  x = -3'),'чисельник = 0'),L_(MI('x = 3:  x - 3 = 0'),'не підходить!'),L_(MI('x = -3'),'відповідь')]},
+    {h:'Чи є число коренем?',t:'Підставляємо число в чисельник і знаменник.',ex:[
+      L_(fr('x','x - 4')+' = 0,  '+MI('x = 4 ?'),'приклад'),L_(MI('4 - 4 = 0'),'знаменник = 0'),L_('ні, не є коренем','на нуль ділити не можна')]},
+    {h:'Дріб = вираз.',t:'Множимо обидві частини на знаменник (він ≠ 0).',ex:[
+      L_(fr('4x^2 - 8','x + 1')+' = '+MI('4x'),'приклад,  x ≠ −1'),L_(MI('4x^2 - 8 = 4x(x + 1)'),'множимо на (x + 1)'),L_(MI('4x^2 - 8 = 4x^2 + 4x'),''),L_(MI('-8 = 4x,   x = -2'),'−2 ≠ −1, підходить')]}]},
+  simp:{n:'Спрощення виразу',ic:'( ):',it:[
+    {h:'Порядок дій.',t:'Спочатку дужки (спільний знаменник), потім множення чи ділення.',ex:[
+      L_(P(fr('a','a - 3')+' − '+fr('a','a + 3'))+' : '+fr('2a','a^2 - 9'),'приклад'),
+      L_(fr('a(a + 3) - a(a - 3)','(a - 3)(a + 3)'),'дужки: спільний знаменник'),
+      L_('= '+fr('a^2 + 3a - a^2 + 3a','a^2 - 9')+' = '+fr('6a','a^2 - 9'),'розкриваємо дужки'),
+      L_(fr('6a','a^2 - 9')+' · '+fr('a^2 - 9','2a')+' = 3','ділимо: множимо на обернений')]},
+    {h:'Різниця квадратів у чисельнику.',t:mi('(a + b)^2 - (a - b)^2 = 4ab'),ex:[
+      L_(P(fr('2a + 1','2a - 1')+' − '+fr('2a - 1','2a + 1'))+' : '+fr('2a^2','4a^2 - 1'),'приклад'),
+      L_(fr('(2a + 1)^2 - (2a - 1)^2','(2a - 1)(2a + 1)'),'дужки: спільний знаменник'),
+      L_('= '+fr('4a^2 + 4a + 1 - 4a^2 + 4a - 1','4a^2 - 1')+' = '+fr('8a','4a^2 - 1'),'розкриваємо квадрати'),
+      L_(fr('8a','4a^2 - 1')+' · '+fr('4a^2 - 1','2a^2')+' = '+fr(4,'a'),'ділимо: множимо на обернений')]}]}
+};
+let thT='mul',thI=0,thN=1;
+$('topics').innerHTML=Object.keys(TOP).map(k=>`<button class="fam" data-f="${k}" aria-pressed="false"><span class="ic">${TOP[k].ic}</span>${TOP[k].n}</button>`).join('');
+function drawTheory(){const T=TOP[thT],cur=T.it[thI],ex=cur.ex;
+  document.querySelectorAll('#topics .fam').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===thT));
+  $('thBody').innerHTML=T.it.map((x,j)=>`<button data-i="${j}" aria-pressed="${j===thI}"><b>${x.h}</b> ${x.t}</button>`).join('');
+  $('board').innerHTML=ex.slice(0,thN).map((l,i)=>`<div class="bl${i===ex.length-1?' fin':''}"><span class="m">${l[0]}</span>${l[1]?`<span class="cm">${l[1]}</span>`:''}</div>`).join('');
+  $('bNext').disabled=$('bAll').disabled=thN>=ex.length}
+$('topics').addEventListener('click',e=>{const b=e.target.closest('.fam');if(!b)return;thT=b.dataset.f;thI=0;thN=1;drawTheory();
+  if(window.innerWidth<=820)$('thBody').scrollIntoView({behavior:'smooth',block:'start'})});
+$('thBody').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b)return;thI=+b.dataset.i;thN=1;drawTheory();
+  if(window.innerWidth<=820)$('board').scrollIntoView({behavior:'smooth',block:'nearest'})});
+$('bNext').onclick=()=>{thN++;drawTheory()};$('bAll').onclick=()=>{thN=99;drawTheory()};$('bReset').onclick=()=>{thN=1;drawTheory()};
+drawTheory();
+
+/* ---------- відповіді: шаблон + своя клавіатура ---------- */
+const num=s=>{s=String(s).replace(/\s/g,'').replace(/[−–—]/g,'-').replace(',','.');return s===''||s==='-'?NaN:Number(s)};
+const KP=`<div class="kp" aria-label="клавіатура">${['7','8','9','⌫','4','5','6','−','1','2','3','→','0'].map(k=>`<button type="button" data-k="${k}" class="${k==='0'?'w':k==='⌫'?'del':''}" aria-label="${k==='⌫'?'стерти':k==='→'?'наступне поле':k==='−'?'мінус':k}">${k==='→'?'→':k}</button>`).join('')}</div>`;
+function tplHTML(t,pref,kp){return `<div class="in tpl mx">${t.tplLead||''}${fillT(t.tpl,i=>`<input id="${pref}i${i}" inputmode="none" autocomplete="off" aria-label="${t.inputs[i].l}">`)}</div>`+(kp?KP:'')}
+function bindKP(box,after){const ins=[...box.querySelectorAll('.in input')];if(!ins.length)return;
+  let act=null;const setAct=el=>{act=el;ins.forEach(i=>i.classList.toggle('act',i===el))};
+  ins.forEach(i=>{i.addEventListener('focus',()=>setAct(i));i.addEventListener('click',()=>setAct(i))});setAct(ins.find(i=>i.value==='')||ins[0]);
+  box.querySelectorAll('.kp [data-k]').forEach(b=>{b.addEventListener('mousedown',e=>e.preventDefault());b.onclick=()=>{if(!act||act.readOnly)return;const k=b.dataset.k;let v=act.value.replace(/[−–—]/g,'-');
+    if(k==='→'){setAct(ins[(ins.indexOf(act)+1)%ins.length]);return}
+    if(k==='⌫')v=v.slice(0,-1);else if(k==='−')v=v.startsWith('-')?v.slice(1):'-'+v;
+    else{if(v.replace('-','').length>=4)return;v=v.replace(/^(-?)0$/,'$1')+k}
+    act.value=v.replace('-','−');act.classList.remove('ok','no');if(after)after()}})}
+function choiceHTML(t,locked,reveal){return `<div class="opts">${t.opts.map((o,i)=>{const cl=(reveal&&i===t.ans)?'right':(i===t.wrongSel||(reveal&&i===t.sel&&i!==t.ans))?'wrong':'';
+  return `<button data-c="${i}" aria-pressed="${t.sel===i}" class="${cl}" ${locked?'disabled':''}>${LAB[i]}. ${o}</button>`}).join('')}</div>`}
+function judge(t){if(t.inputs){const m=t.inputs.map((x,i)=>Math.abs(num(t.vals[i])-x.a)<1e-6);return{ok:m.every(Boolean),marks:m,got:m.filter(Boolean).length}}
+  return{ok:t.sel===t.ans}}
+const ready=t=>t.inputs?t.vals.some(v=>v.trim()!==''):t.sel!==null;
+function answerShow(t){if(t.inputs){t.vals=t.inputs.map(x=>fn(x.a));t.marks=t.inputs.map(()=>'ok')}if(t.opts)t.sel=t.ans}
+function taskHTML(t,pref,locked,badge,extra){
+  const body=t.inputs?tplHTML(t,pref,!locked):choiceHTML(t,locked,locked);
+  return `<div class="task1"><h3>${t.title}${badge?` <span class="lvl">${badge}</span>`:''}</h3><p class="ttext">${t.text}</p><div class="expr mx">${t.ex}</div>${body}${extra||''}</div>`}
+function bindTask(box,t,pref,locked,redraw,onEnter){
+  if(t.inputs){const save=()=>{t.vals=t.inputs.map((_,i)=>$(pref+'i'+i).value);t.fb='';t.marks=null};
+    t.inputs.forEach((_,i)=>{const el=$(pref+'i'+i);el.value=t.vals[i];if(t.marks)el.classList.add(t.marks[i]===true||t.marks[i]==='ok'?'ok':'no');
+      if(locked)el.readOnly=true;else{el.oninput=save;if(onEnter)el.addEventListener('keydown',e=>{if(e.key==='Enter')onEnter()})}});
+    if(!locked)bindKP(box,()=>{save();if(t.onChange)t.onChange()})}
+  if(locked)return;
+  if(t.opts)box.querySelectorAll('.opts [data-c]').forEach(b=>b.onclick=()=>{t.sel=+b.dataset.c;t.wrongSel=null;t.fb='';redraw()})}
+
+/* ---------- 2. тренування ---------- */
+let TR;
+function trNew(){TR={tasks:PLAN().map(([y,l,p,lv])=>{const t=make(y,l,TRV[y+l],p,lv);TRV[y+l]=t.v;return t}),i:0};drawTR()}
+function drawTR(){const box=$('tr');if(TR.i>=TR.tasks.length)return drawTRend();
+  const t=TR.tasks[TR.i];
+  const dots=TR.tasks.map((x,i)=>`<i class="${i===TR.i?'cur':x.solved?(x.shown?'no':x.help?'help':'ok'):''}" title="Завдання ${i+1}"></i>`).join('');
+  const steps=t.hintN?`<ol class="steps">${t.steps.slice(0,t.hintN).map((s,i)=>`<li><b>Крок ${i+1}.</b> ${s}</li>`).join('')}</ol>`:'';
+  box.innerHTML=`<div class="progress"><span>Завдання ${TR.i+1} з ${TR.tasks.length}</span><span>${TYP[t.type]} · рівень ${t.level}</span></div><div class="dots">${dots}</div>`+
+    taskHTML(t,'r',t.solved,'',`${steps}<div id="trFb">${t.fb}</div><div class="row-btns" id="trBtns"></div>`);
+  bindTask(box,t,'r',t.solved,drawTR,trCheck);
+  const B=$('trBtns');
+  B.insertAdjacentHTML('afterend',`<div class="row-btns"><button class="btn" id="trPrev" ${TR.i===0?'disabled':''}>← Назад</button><button class="btn" id="trFwd">${TR.i===TR.tasks.length-1?'Результат →':'Вперед →'}</button></div>`);
+  const goTo=j=>{TR.i=j;drawTR();window.scrollTo(0,0)};
+  $('trPrev').onclick=()=>{if(TR.i>0)goTo(TR.i-1)};$('trFwd').onclick=()=>goTo(TR.i+1);
+  box.querySelectorAll('.dots i').forEach((d,j)=>d.onclick=()=>goTo(j));
+  if(t.solved){B.innerHTML=`<button class="btn main" id="trNext">${TR.i===TR.tasks.length-1?'Результат':'Наступне завдання'}</button>`;$('trNext').onclick=()=>goTo(TR.i+1);return}
+  B.innerHTML=`<button class="btn main" id="trCheck">Перевірити</button>`+(t.hintN<t.steps.length?`<button class="btn hint" id="trHint">Крок ${t.hintN+1} з ${t.steps.length}</button>`:'')+
+    (t.wrong>=2||t.hintN>=t.steps.length?`<button class="btn" id="trShow">Показати відповідь</button>`:'');
+  $('trCheck').onclick=trCheck;
+  if($('trHint'))$('trHint').onclick=()=>{t.hintN++;drawTR()};
+  if($('trShow'))$('trShow').onclick=()=>{t.solved=t.shown=true;t.hintN=t.steps.length;answerShow(t);
+    t.fb=`<div class="fb info"><span class="ttl">Відповідь:</span>${t.sol}<br>Перечитай кроки — у контрольній буде схоже завдання.</div>`;drawTR()};
+  t.onChange=()=>{$('trCheck').disabled=!ready(t)};$('trCheck').disabled=!ready(t)}
+function trCheck(){const t=TR.tasks[TR.i];if(t.solved||!ready(t))return;const r=judge(t);
+  if(t.inputs)t.marks=r.marks;
+  if(r.ok){t.solved=true;t.help=t.hintN>0;t.hintN=t.steps.length;
+    t.fb=`<div class="fb ok"><span class="ttl">${pick(['Чудово!','Правильно!','Так тримати!','Точно в ціль!'])}</span>${t.help?'Молодець, що розібрався з кроками.':'Ось покрокове розв\'язання — звір зі своїм.'}</div>`}
+  else{t.wrong++;const empty=t.inputs&&t.vals.some(v=>v.trim()==='');
+    let msg=t.inputs?(empty?'Заповни всі клітинки.':'Перевір червоні клітинки.'):'Ця відповідь неправильна.';
+    if(t.hintN<t.steps.length){t.hintN++;msg+=` Подивись крок ${t.hintN}.`}
+    if(t.opts){t.wrongSel=t.sel;t.sel=null}
+    t.fb=`<div class="fb no"><span class="ttl">Ще не зовсім.</span>${msg}</div>`}
+  drawTR()}
+function drawTRend(){const n=TR.tasks.length,ok=TR.tasks.filter(t=>t.solved&&!t.shown&&!t.help).length,help=TR.tasks.filter(t=>t.help).length,sh=TR.tasks.filter(t=>t.shown).length;
+  $('tr').innerHTML=`<div class="final"><div class="big">${ok} / ${n}</div><p>самостійно${help?`, ще ${help} — з кроками`:''}${sh?`, ${sh} — з показаною відповіддю`:''}.</p>
+  <p>${ok>=8?'Блискуче! Можна писати пробну контрольну.':ok>=5?'Добре! Пройди ще одне тренування з новими числами або спробуй пробну контрольну.':'Перечитай Пояснення і пройди тренування ще раз: числа будуть нові.'}</p>
+  <div class="row-btns" style="justify-content:center"><button class="btn main" id="trAgain">Нове тренування</button><button class="btn" id="trBack">← Назад до завдань</button><button class="btn" id="trExam">До контрольної</button></div></div>`;
+  $('trBack').onclick=()=>{TR.i=TR.tasks.length-1;drawTR();window.scrollTo(0,0)};
+  $('trAgain').onclick=()=>{trNew();window.scrollTo(0,0)};$('trExam').onclick=()=>openTab($('t-ex'))}
+trNew();
+
+/* ---------- 3. пробна контрольна ---------- */
+let EX=null,STUD={n:'',c:''};
+function exStart(){EX={tasks:PLAN().map(([y,l,p,lv])=>make(y,l,TRV[y+l],p,lv)),i:0,done:false,t0:Date.now()};drawEx()}
+function exIntro(){$('ex').innerHTML=`<ul class="rules"><li>10 завдань: рівень 1 — №1–4, рівень 2 — №5–9, рівень 3 — №10. №6 і №10 — по 2 бали, решта — по 1 балу.</li>
+  <li>Кроків і підказок немає. Між завданнями можна переходити й змінювати відповіді, доки не натиснеш «Здати роботу».</li><li>Оцінка = кількість балів (з 12).</li></ul>
+  <div class="namebox"><label>Прізвище та ім'я<input id="exName" autocomplete="name" placeholder="Наприклад, Коваленко Марія"></label><label>Клас<input id="exClass" placeholder="8-А"></label></div>
+  <button class="btn main" id="exGo">Почати контрольну</button><div id="exNameFb"></div>`;
+  try{$('exName').value=localStorage.getItem(KEY+'name')||'';$('exClass').value=localStorage.getItem(KEY+'class')||''}catch(e){}
+  $('exGo').onclick=()=>{const n=$('exName').value.trim(),c=$('exClass').value.trim();
+    if(!n){$('exNameFb').innerHTML='<div class="fb no">Впиши прізвище та ім\'я, щоб учитель знав, чий це результат.</div>';$('exName').focus();return}
+    STUD={n,c};try{localStorage.setItem(KEY+'name',n);localStorage.setItem(KEY+'class',c)}catch(e){}exStart();window.scrollTo(0,0)}}
+function drawEx(){if(EX.done)return drawExRes();const t=EX.tasks[EX.i],box=$('ex'),last=EX.i===EX.tasks.length-1;
+  box.innerHTML=`<div class="exbar">${EX.tasks.map((x,i)=>`<button data-j="${i}" class="${i===EX.i?'cur':ready(x)?'ans':''}" aria-label="Завдання ${i+1}">${i+1}</button>`).join('')}</div>
+    <p class="lvhead">Рівень ${t.level} · завдання ${EX.i+1}</p>`+
+    taskHTML(t,'e',false,baly(t.pts),`<div class="row-btns"><button class="btn" id="exPrev" ${EX.i===0?'disabled':''}>← Назад</button>${!last?'<button class="btn main" id="exNext">Далі →</button>':''}<button class="btn${last?' main':''}" id="exEnd">Здати роботу</button></div><div id="exFb"></div>`);
+  t.onChange=()=>{const d=box.querySelector(`.exbar [data-j="${EX.i}"]`);if(d)d.className='cur'};
+  bindTask(box,t,'e',false,drawEx);
+  const go=j=>{EX.i=j;drawEx();window.scrollTo(0,0)};
+  box.querySelectorAll('.exbar button').forEach(b=>b.onclick=()=>go(+b.dataset.j));
+  $('exPrev').onclick=()=>go(EX.i-1);if($('exNext'))$('exNext').onclick=()=>go(EX.i+1);
+  $('exEnd').onclick=()=>{const left=EX.tasks.filter(x=>!ready(x)).length;
+    if(left&&!$('exSure')){$('exFb').innerHTML=`<div class="fb info"><span class="ttl">Без відповіді ${left} ${plural(left,'завдання','завдання','завдань')}.</span>Здати все одно?<div class="row-btns"><button class="btn main" id="exSure">Так, здати</button></div></div>`;
+      $('exSure').onclick=exFinish;$('exFb').scrollIntoView({behavior:'smooth',block:'nearest'});return}
+    exFinish()}}
+function exFinish(){let total=0;EX.tasks.forEach(t=>{const r=judge(t);
+    if(t.inputs){t.got=r.ok?t.pts:(r.got>0&&t.pts>1?1:0);t.marks=r.marks}else t.got=r.ok?t.pts:0;
+    t.res=t.got===t.pts?'ok':t.got?'part':'no';total+=t.got});
+  EX.score=total;EX.done=true;EX.min=Math.max(1,Math.round((Date.now()-EX.t0)/60000));EX.mail=!TEACHER_EMAIL?'off':location.protocol==='file:'?'local':'sending';drawExRes();window.scrollTo(0,0);mailRes()}
+function revLine(t){if(t.res==='ok')return 'Правильно: '+t.sol;
+  let mine;if(t.inputs)mine=t.vals.every(v=>v.trim()==='')?'—':MX((t.tplLead||'')+fillT(t.tpl,i=>`<span class="tv">${esc(t.vals[i].trim())||'?'}</span>`));
+  else mine=t.sel===null?'—':t.opts[t.sel];
+  return `Твоя відповідь: ${mine}<br>Правильно: ${t.sol}`}
+const gradeOf=s=>Math.max(1,s);
+function drawExRes(){const s=EX.score,grade=gradeOf(s);
+  const msg=grade>=10?'Ти готовий до контрольної! Так тримати.':grade>=7?'Добрий результат. Потренуй завдання, де були помилки.':grade>=4?'Є над чим попрацювати: повтори Пояснення і пройди Тренування.':'Почни з Пояснення, а потім пройди Тренування з кроками.';
+  $('ex').innerHTML=`<div class="final">${STUD.n?`<p><b>${esc(STUD.n)}${STUD.c?', '+esc(STUD.c):''}</b></p>`:''}<div class="big">${s} / 12</div><p><b>Оцінка: ${grade} ${plural(grade,'бал','бали','балів')} з 12</b> · час ${EX.min} хв</p><p>${msg}</p>
+  <div class="row-btns" style="justify-content:center"><button class="btn main" id="exSend">Надіслати результат учителю</button><button class="btn" id="exAgain">Нова контрольна</button></div>
+  <div id="mailSt">${mailStHTML()}</div></div>
+  <h3>Розбір</h3><div class="review">${EX.tasks.map((t,i)=>`<div class="${t.res}"><b>${i+1}. ${TYP[t.type]}: ${t.got} з ${baly(t.pts)}</b>${revLine(t)}</div>`).join('')}</div>`;
+  $('exAgain').onclick=exIntro;$('exSend').onclick=()=>shareRes(s,grade)}
+function mailStHTML(){const m=EX.mail;
+  if(m==='sending')return '<p class="note">Надсилаю результат учителю…</p>';
+  if(m==='ok')return '<div class="fb ok"><span class="ttl">Результат автоматично надіслано вчителю.</span>Кнопкою вище можна ще й переслати його в месенджер.</div>';
+  if(m==='local')return '<div class="fb info"><span class="ttl">Тренажер відкрито як файл, тому автоматично результат не надсилається.</span>Він надсилається сам, коли тренажер відкрито за посиланням з інтернету. Зараз натисни «Надіслати результат учителю» і перешли його в Viber чи Telegram.</div>';
+  if(m==='activate')return '<div class="fb info"><span class="ttl">Пошту вчителя ще не активовано.</span>На неї надіслано лист з кнопкою «Activate Form». Цей результат перешли кнопкою вище.</div>';
+  if(m==='fail')return '<div class="fb no"><span class="ttl">Не вдалося надіслати автоматично.</span>Натисни «Надіслати результат учителю» і перешли його в Viber чи Telegram.</div>';
+  return '<p class="note">Кнопка відкриє Viber, Telegram чи інший месенджер з готовим повідомленням.</p>'}
+const badList=()=>EX.tasks.map((t,i)=>t.res!=='ok'?`№${i+1} ${TYP[t.type]} (${t.got}/${t.pts})`:'').filter(Boolean);
+async function mailRes(){if(EX.mail!=='sending')return;const s=EX.score,grade=gradeOf(s),bad=badList();
+  try{const r=await fetch('https://formsubmit.co/ajax/'+encodeURIComponent(TEACHER_EMAIL),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({_subject:`Раціональні вирази: ${STUD.n}${STUD.c?', '+STUD.c:''}, оцінка ${grade}`,_template:'table',_captcha:'false',
+        'Тема':`${TITLE}, пробна контрольна, 8 клас`,'Учень':STUD.n,'Клас':STUD.c||'—','Бали':`${s} з 12`,'Оцінка':`${grade} з 12`,'Помилки':bad.length?bad.join('; '):'немає','Час':`${EX.min} хв`,'Дата':new Date().toLocaleString('uk-UA')})});
+    const j=await r.json().catch(()=>({}));EX.mail=(r.ok&&String(j.success)!=='false')?'ok':/activat/i.test(j.message||'')?'activate':'fail'}
+  catch(e){EX.mail='fail'}
+  if($('mailSt'))$('mailSt').innerHTML=mailStHTML()}
+function resText(s,grade){const d=new Date(),pad=n=>String(n).padStart(2,'0'),bad=badList();
+  return `Пробна контрольна «${TITLE}», 8 клас\nУчень: ${STUD.n||'—'}${STUD.c?', '+STUD.c:''}\nРезультат: ${s} з 12 балів, оцінка ${grade} з 12\n`+
+    (bad.length?`Помилки: ${bad.join('; ')}\n`:'Без помилок!\n')+`Час: ${EX.min} хв, ${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`}
+async function shareRes(s,grade){const text=resText(s,grade);
+  if(navigator.share){try{await navigator.share({title:'Результат контрольної',text});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text);toast('Результат скопійовано. Встав його в чат учителя.')}
+  catch(e){window.prompt('Скопіюй цей текст і надішли вчителю:',text)}}
+exIntro();
+try{const s=localStorage.getItem(KEY+'tab');if(s&&$(s))openTab($(s))}catch(e){}
+</script>
+</body>
+</html>
